@@ -10,179 +10,135 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
-public class yourclass extends Core implements KeyListener, MouseListener,
-		MouseMotionListener {
-	int centrex1 = 40;
-	int centrey1 = 40;
-	int centrex2 = 600;
-	int centrey2 = 440;
-	int currentDirection1 = 1;
-	int currentDirection2 = 3;
-	int moveAmount = 5;
-	ArrayList<Integer> pathx1 = new ArrayList();
-	ArrayList<Integer> pathy1 = new ArrayList();
-	ArrayList<Integer> pathx2 = new ArrayList();
-	ArrayList<Integer> pathy2 = new ArrayList();
+public class yourclass extends Core {
+    private static final int PLAYER_FILL_WIDTH = 10;
+    private static final int PLAYER_FILL_HEIGHT = 10;
+    
+    private Window window;
+    private ArrayList<Player> players = new ArrayList();
+    private int framesRendered = 0;
+    private int moveAmount = 5;
 
-	public void init() {
-		super.init();
+    public void init() {
+        super.init();
 
-		Window w = sm.getFullScreenWindow();
-		w.addKeyListener(this);
-		w.addMouseListener(this);
-		w.addMouseMotionListener(this);
-	}
+        window = screenManager.getFullScreenWindow();
+        
+        createNewPlayer(new Player(40, 40, Direction.RIGHT,
+        KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, Color.green));
+        
+        createNewPlayer(new Player(600, 440, Direction.LEFT, 
+        KeyEvent.VK_W, KeyEvent.VK_D, KeyEvent.VK_S, KeyEvent.VK_A, Color.red));
+        
+        createNewPlayer(new Player(40, 840, Direction.RIGHT, 
+        KeyEvent.VK_I, KeyEvent.VK_L, KeyEvent.VK_K, KeyEvent.VK_J, Color.yellow));
+    }
 
-	public static void main(String[] args) {
-		new yourclass().run();
-	}
+    public static void main(String[] args) {
+        new yourclass().run();
+    }
 
-	public void draw(Graphics2D g) {
-		switch(currentDirection1){
-		case 0:
-			if (centrey1>0){
-			centrey1-=moveAmount;
-			} else {
-				centrey1 = sm.getHeight();
-			}
-			break;
-		case 1:
-			if (centrex1 < sm.getWidth()){
-			centrex1+=moveAmount;
-			} else {
-				centrex1 = 0;
-			}
-			break;
-		case 2:
-			if (centrey1 < sm.getHeight()){
-			centrey1+=moveAmount;
-			} else {
-				centrey1 = 0;
-			}
-			break;
-		case 3:
-			if (centrex1>0){
-			centrex1-=moveAmount;
-			} else {
-				centrex1 = sm.getWidth();
-			}
-			break;
-		}
-		switch(currentDirection2){
-		case 0:
-			if (centrey2>0){
-			centrey2-=moveAmount;
-			} else {
-				centrey2 = sm.getHeight();
-			}
-			break;
-		case 1:
-			if (centrex2 < sm.getWidth()){
-			centrex2+=moveAmount;
-			} else {
-				centrex2 = 0;
-			}
-			break;
-		case 2:
-			if (centrey2 < sm.getHeight()){
-			centrey2+=moveAmount;
-			} else {
-				centrey2 = 0;
-			}
-			break;
-		case 3:
-			if (centrex2>0){
-			centrex2-=moveAmount;
-			} else {
-				centrex2 = sm.getWidth();
-			}
-			break;
-		}
-	    for (int x = 0;x<pathx1.size();x++){
-	    	if (((centrex1 == pathx1.get(x)) && (centrey1 == pathy1.get(x))) || ((centrex2 == pathx2.get(x)) && (centrey2 == pathy2.get(x))) || ((centrex1 == pathx2.get(x)) && (centrey1 == pathy2.get(x))) || ((centrex2 == pathx1.get(x)) && (centrey2 == pathy1.get(x)))){
-	    		System.exit(0);
-	    	}
-	    }
-		pathx1.add(centrex1);
-		pathy1.add(centrey1);
-		pathx2.add(centrex2);
-		pathy2.add(centrey2);
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, sm.getWidth(), sm.getHeight());
-		for (int x = 0;x<pathx1.size();x++){
-		g.setColor(Color.green);
-		g.fillRect(pathx1.get(x), pathy1.get(x), 10, 10);
-		g.setColor(Color.red);
-		g.fillRect(pathx2.get(x), pathy2.get(x), 10, 10);
-		}
-	}
+    public void draw(Graphics2D graphics) {
+        movePlayers();
 
-	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			if (currentDirection1 != 2){
-			currentDirection1 = 0;
-			}
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			if (currentDirection1 != 0){
-				currentDirection1 = 2;
-				}
-		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if (currentDirection1 != 3){
-				currentDirection1 = 1;
-				}
-		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			if (currentDirection1 != 1){
-				currentDirection1 = 3;
-				}
-		}
-		if (e.getKeyCode() == KeyEvent.VK_W){
-			if (currentDirection2 != 2){
-			currentDirection2 = 0;
-			}
-		} else if (e.getKeyCode() == KeyEvent.VK_S) {
-			if (currentDirection2 != 0){
-				currentDirection2 = 2;
-				}
-		} else if (e.getKeyCode() == KeyEvent.VK_D) {
-			if (currentDirection2 != 3){
-				currentDirection2 = 1;
-				}
-		} else if (e.getKeyCode() == KeyEvent.VK_A) {
-			if (currentDirection2 != 1){
-				currentDirection2 = 3;
-				}
-		}
-	}
+        checkForCollisions();
+        
+        clearGameWindow(graphics);
+        renderPlayers(graphics);
+        
+        ++framesRendered;
+    }
 
-	public void keyReleased(KeyEvent e) {
+    private void clearGameWindow(Graphics2D graphics) {
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(0, 0, screenManager.getWidth(), screenManager.getHeight());
+    }
 
-	}
+    private void renderPlayers(Graphics2D graphics) {
+        for (int frameIndex = 0;frameIndex < framesRendered; frameIndex++) {
+            for(Player player : players) {
+                graphics.setColor(player.getColor());
+                graphics.fillRect(player.getPathX().get(frameIndex), player.getPathY().get(frameIndex),
+                        PLAYER_FILL_WIDTH, PLAYER_FILL_HEIGHT);
+            }
+        }
+    }
 
-	public void keyTyped(KeyEvent arg0) {
+    private void movePlayers() {
+        for(Player player : players) {
+            movePlayer(player, moveAmount);
+        }
+    }
+        
+    private void checkForCollisions() {
+        for (int frameIndex = 0; frameIndex < framesRendered; frameIndex++){    
+             for (Player player1 : players) {              
+                 for (Player player2 : players) {
+                     if(player1.getCentreX() == player2.getPathX().get(frameIndex) && 
+                             player1.getCentreY() == player2.getPathY().get(frameIndex)) {
+                         System.out.println("Collision detected, ending the game");
+                         System.exit(0);
+                     }
+                 }
+             }
+        }
+    }
+        
+    private void movePlayer(Player player, int moveAmount){
+        if(isPlayerInPlayArea(player)){
+            player.move(moveAmount);
+        }
+        else {
+            swingPlayerToOtherSide(player);
+            player.move(0);
+        }
+        
+    }
 
-	}
+    private boolean isPlayerInPlayArea(Player player){
+        if(player.getCentreY() < 0){
+            return false;
+        }
 
-	public void mouseClicked(MouseEvent e) {
+        if(player.getCentreY() > screenManager.getHeight()){
+            return false;
+        }
 
-	}
+        if(player.getCentreX() < 0){
+            return false;
+        }
 
-	public void mouseEntered(MouseEvent arg0) {
-	}
+        if(player.getCentreX() > screenManager.getWidth()){
+            return false;
+        }
 
-	public void mouseExited(MouseEvent arg0) {
-	}
+        return true;
+    }
 
-	public void mousePressed(MouseEvent e) {
-	}
+    private void swingPlayerToOtherSide(Player player){
+        switch(player.getCurrentDirection()) {
+            case UP:
+                player.setCentreY(screenManager.getHeight());
+                break;
 
-	public void mouseReleased(MouseEvent e) {
-	}
+            case RIGHT:
+                player.setCentreX(0);
+                break;
 
-	public void mouseDragged(MouseEvent e) {
+            case DOWN:
+                player.setCentreY(0);
+                break;
 
-	}
-
-	public void mouseMoved(MouseEvent e) {
-
-	}
+            case LEFT:
+                player.setCentreX(screenManager.getWidth());
+                break;
+        }
+    }
+    
+    private Player createNewPlayer(Player player) {
+        window.addKeyListener(player);
+        players.add(player);
+        
+        return player;
+    }
 }
