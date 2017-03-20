@@ -4,8 +4,21 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-public class ScreenManager {
-	
+public class ScreenManager {	
+    
+	private static final DisplayMode modes[] = 
+        {
+            //new DisplayMode(1920,1080,32,0),
+            new DisplayMode(1680,1050,32,0),
+            //new DisplayMode(1280,1024,32,0),
+            new DisplayMode(800,600,32,0),
+            new DisplayMode(800,600,24,0),
+            new DisplayMode(800,600,16,0),
+            new DisplayMode(640,480,32,0),
+            new DisplayMode(640,480,24,0),
+            new DisplayMode(640,480,16,0),
+        };
+        
 	private GraphicsDevice graphicsDevice;
 	
 	public ScreenManager(){
@@ -17,7 +30,7 @@ public class ScreenManager {
             return graphicsDevice.getDisplayModes();
 	}
 	
-	public DisplayMode findFirstCompatibaleMode(DisplayMode[] modes){
+	public DisplayMode findFirstCompatibaleMode(){
 		
             DisplayMode goodModes[] = graphicsDevice.getDisplayModes();
             for(int x = 0; x<modes.length;x++){

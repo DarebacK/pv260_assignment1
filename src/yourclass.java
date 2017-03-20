@@ -1,16 +1,15 @@
-import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.DisplayMode;
+import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Stroke;
+import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class yourclass extends Core {
+public class yourclass  {
+    
     private static final int PLAYER_FILL_WIDTH = 10;
     private static final int PLAYER_FILL_HEIGHT = 10;
     
@@ -18,11 +17,37 @@ public class yourclass extends Core {
     private ArrayList<Player> players = new ArrayList();
     private int framesRendered = 0;
     private int moveAmount = 5;
+    private boolean running;
+	
+    
+    protected ScreenManager screenManager;
+	
+    public void stop(){
+        running = false;
+    }
+	
+    public void run(){
+        try{
+            init();
+            gameLoop();
+        }finally{
+            screenManager.restoreScreen();
+        }
+    }
+	
 
     public void init() {
-        super.init();
+         screenManager = new ScreenManager();
+            DisplayMode displayMode = screenManager.findFirstCompatibaleMode();
+            screenManager.setFullScreen(displayMode);
+            window = screenManager.getFullScreenWindow();
+            window.setFont(new Font("Arial",Font.PLAIN,20));
+            window.setBackground(Color.WHITE);
+            window.setForeground(Color.RED);
+            window.setCursor(window.getToolkit().createCustomCursor(new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),"null")); 
+            running = true;
 
-        window = screenManager.getFullScreenWindow();
+        //window = screenManager.getFullScreenWindow();
         
         createNewPlayer(new Player(40, 40, Direction.RIGHT,
         KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, Color.green));
@@ -141,4 +166,26 @@ public class yourclass extends Core {
         
         return player;
     }
+    
+    public void gameLoop(){
+            long startTime = System.currentTimeMillis();
+            long cumTime = startTime;
+
+            while (running){
+                long timePassed = System.currentTimeMillis()-cumTime;
+                cumTime+= timePassed;
+                update(timePassed);
+                Graphics2D graphics = screenManager.getGraphics();
+                draw(graphics);
+                graphics.dispose();
+                screenManager.update();
+
+                try{
+                    Thread.sleep(20);
+                }catch(Exception ex){}
+            }
+	}
+	
+	public void update(long timePassed){}
+	
 }

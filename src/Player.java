@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author Pavel Morcinek (433491@mail.muni.cz)
  */
-public class Player implements KeyListener, MouseListener {
+public class Player implements KeyListener {
     private int centreX;
     private int centreY;
     private Direction currentDirection;
@@ -126,31 +126,6 @@ public class Player implements KeyListener, MouseListener {
         
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        
-    }
-    
     private void moveUp(int moveAmount){
         centreY -= moveAmount;
     }
