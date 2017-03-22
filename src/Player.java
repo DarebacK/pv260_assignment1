@@ -19,21 +19,15 @@ import java.util.List;
  */
 public class Player extends GameObject {
     
-    private int upKey;
-    private int rightKey;
-    private int downKey;
-    private int leftKey;
+    
     private Color color;
     
     private int moveSpeed = 5;
 
     public Player(int startPositionX, int startPositionY, Direction currentDirection,
             int upKey, int rightKey, int downKey, int leftKey, Color color) {
-        super(startPositionX, startPositionY, currentDirection);
-        this.upKey = upKey;
-        this.rightKey = rightKey;
-        this.downKey = downKey;
-        this.leftKey = leftKey;
+        super(startPositionX, startPositionY, currentDirection, upKey, rightKey, downKey, leftKey);
+     
         this.color = color;
     }
     

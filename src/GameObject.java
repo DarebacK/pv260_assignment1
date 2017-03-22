@@ -16,6 +16,10 @@ import java.util.List;
 public abstract class GameObject {
     protected int centreX;
     protected int centreY;
+    protected int upKey;
+    protected int rightKey;
+    protected int downKey;
+    protected int leftKey;
     protected Direction currentDirection;
     
     //TODO this only belongs to player what if other objects also added
@@ -23,11 +27,16 @@ public abstract class GameObject {
     protected List<Integer> pathX = new ArrayList();
     protected List<Integer> pathY = new ArrayList();
     
-    GameObject(int centreX, int centreY, Direction currentDirection)
+    GameObject(int centreX, int centreY, Direction currentDirection,
+            int upKey, int rightKey, int downKey, int leftKey)
     {
         this.centreX=centreX;
         this.centreY=centreY;
         this.currentDirection=currentDirection;
+        this.upKey = upKey;
+        this.rightKey = rightKey;
+        this.downKey = downKey;
+        this.leftKey = leftKey;
     }
     
     public abstract void tick();
