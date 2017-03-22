@@ -25,14 +25,11 @@ public class Player extends GameObject {
     private int leftKey;
     private Color color;
     
-    //TODO private int framesRendered  where this variable should be   
-    private static final int PLAYER_FILL_WIDTH = 10;
-    private static final int PLAYER_FILL_HEIGHT = 10;
-    private int moveAmount = 5;
+    private int moveSpeed = 5;
 
     public Player(int startPositionX, int startPositionY, Direction currentDirection,
-            int upKey, int rightKey, int downKey, int leftKey, Color color, int screenHeight, int screenWidth) {
-        super(startPositionX, startPositionY, currentDirection, screenHeight, screenWidth);
+            int upKey, int rightKey, int downKey, int leftKey, Color color) {
+        super(startPositionX, startPositionY, currentDirection);
         this.upKey = upKey;
         this.rightKey = rightKey;
         this.downKey = downKey;
@@ -40,57 +37,9 @@ public class Player extends GameObject {
         this.color = color;
     }
     
-    
     private void movePlayer(){
-        if(isPlayerInPlayArea()){
-            move(moveAmount);
-        }
-        else {
-            swingPlayerToOtherSide();
-            move(0);
-        }
-        
+        move(moveSpeed);
     }   
-    
-    private boolean isPlayerInPlayArea(){
-        if(this.getCentreY() < 0){
-            return false;
-        }
-
-        if(this.getCentreY() > screenHeight){
-            return false;
-        }
-
-        if(this.getCentreX() < 0){
-            return false;
-        }
-
-        if(this.getCentreX() > screenWidth){
-            return false;
-        }
-
-        return true;
-    }
-
-    private void swingPlayerToOtherSide(){
-        switch(this.getCurrentDirection()) {
-            case UP:
-                this.setCentreY(screenHeight);
-                break;
-
-            case RIGHT:
-                this.setCentreX(0);
-                break;
-
-            case DOWN:
-                this.setCentreY(0);
-                break;
-
-            case LEFT:
-                this.setCentreX(screenWidth);
-                break;
-        }
-    }
     
     public void move(int moveAmount){
         switch(currentDirection){
@@ -110,9 +59,6 @@ public class Player extends GameObject {
                 moveLeft(moveAmount);
                 break;
         }
-        
-        pathX.add(centreX);
-        pathY.add(centreY);
     }
 
     public Color getColor() {
@@ -135,20 +81,14 @@ public class Player extends GameObject {
         centreX -= moveAmount;
     }
 
-    @Override
     public void tick() {
         movePlayer();
-    }
-
-    //TODO framesRendered???????? 
-    //is it Okay?
-    @Override
-    public void render(Graphics2D graphics, int framesRendered) {
-        for (int frameIndex = 0; frameIndex < framesRendered; frameIndex++) {
-                graphics.setColor(this.getColor());
-                graphics.fillRect(this.getPathX().get(frameIndex), this.getPathY().get(frameIndex),
-                        PLAYER_FILL_WIDTH, PLAYER_FILL_HEIGHT);
-            
-        }
-    }    
+        rememberPath();
+    }   
+    
+    private void rememberPath() {
+        pathX.add(centreX);
+        pathY.add(centreY);
+    }   
 }
+

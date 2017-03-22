@@ -18,26 +18,19 @@ public abstract class GameObject {
     protected int centreY;
     protected Direction currentDirection;
     
-    //TODO variables shouldn't be here ?????
-    protected int screenHeight;
-    protected int screenWidth;  
-    
     //TODO this only belongs to player what if other objects also added
+    //yes we need to get rid of this, either move it to player or tron (player makes more sense i guess)
     protected List<Integer> pathX = new ArrayList();
     protected List<Integer> pathY = new ArrayList();
     
-    GameObject(int centreX, int centreY, Direction currentDirection, int screenHeight, int screenWidth)
+    GameObject(int centreX, int centreY, Direction currentDirection)
     {
         this.centreX=centreX;
         this.centreY=centreY;
         this.currentDirection=currentDirection;
-        this.screenHeight=screenHeight;
-        this.screenWidth=screenWidth;
     }
     
     public abstract void tick();
-    
-    public abstract void render(Graphics2D graphics, int framesRendered);
     
     public void setCentreX(int centreX) {
         this.centreX = centreX;
