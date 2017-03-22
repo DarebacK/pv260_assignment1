@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -16,28 +17,79 @@ import java.util.List;
  *
  * @author Pavel Morcinek (433491@mail.muni.cz)
  */
-public class Player implements KeyListener {
-    private int centreX;
-    private int centreY;
-    private Direction currentDirection;
-    private List<Integer> pathX = new ArrayList();
-    private List<Integer> pathY = new ArrayList();
+public class Player extends GameObject {
+    
     private int upKey;
     private int rightKey;
     private int downKey;
     private int leftKey;
     private Color color;
+    
+    //TODO private int framesRendered  where this variable should be   
+    private static final int PLAYER_FILL_WIDTH = 10;
+    private static final int PLAYER_FILL_HEIGHT = 10;
+    private int moveAmount = 5;
 
     public Player(int startPositionX, int startPositionY, Direction currentDirection,
-            int upKey, int rightKey, int downKey, int leftKey, Color color) {
-        this.centreX = startPositionX;
-        this.centreY = startPositionY;
-        this.currentDirection = currentDirection;
+            int upKey, int rightKey, int downKey, int leftKey, Color color, int screenHeight, int screenWidth) {
+        super(startPositionX, startPositionY, currentDirection, screenHeight, screenWidth);
         this.upKey = upKey;
         this.rightKey = rightKey;
         this.downKey = downKey;
         this.leftKey = leftKey;
         this.color = color;
+    }
+    
+    
+    private void movePlayer(){
+        if(isPlayerInPlayArea()){
+            move(moveAmount);
+        }
+        else {
+            swingPlayerToOtherSide();
+            move(0);
+        }
+        
+    }   
+    
+    private boolean isPlayerInPlayArea(){
+        if(this.getCentreY() < 0){
+            return false;
+        }
+
+        if(this.getCentreY() > screenHeight){
+            return false;
+        }
+
+        if(this.getCentreX() < 0){
+            return false;
+        }
+
+        if(this.getCentreX() > screenWidth){
+            return false;
+        }
+
+        return true;
+    }
+
+    private void swingPlayerToOtherSide(){
+        switch(this.getCurrentDirection()) {
+            case UP:
+                this.setCentreY(screenHeight);
+                break;
+
+            case RIGHT:
+                this.setCentreX(0);
+                break;
+
+            case DOWN:
+                this.setCentreY(0);
+                break;
+
+            case LEFT:
+                this.setCentreX(screenWidth);
+                break;
+        }
     }
     
     public void move(int moveAmount){
@@ -62,68 +114,9 @@ public class Player implements KeyListener {
         pathX.add(centreX);
         pathY.add(centreY);
     }
-    
-    public void setCentreX(int centreX) {
-        this.centreX = centreX;
-    }
-
-    public void setCentreY(int centreY) {
-        this.centreY = centreY;
-    }
-
-    public int getCentreX() {
-        return centreX;
-    }
-
-    public int getCentreY() {
-        return centreY;
-    }
-
-    public Direction getCurrentDirection() {
-        return currentDirection;
-    }
-
-    public List<Integer> getPathX() {
-        return pathX;
-    }
-
-    public List<Integer> getPathY() {
-        return pathY;
-    }
 
     public Color getColor() {
         return color;
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == upKey) {
-            if (getCurrentDirection() != Direction.DOWN){
-                currentDirection = Direction.UP;
-            }
-        } else if (e.getKeyCode() == downKey) {
-            if (getCurrentDirection() != Direction.UP){
-                currentDirection = Direction.DOWN;
-            }
-        } else if (e.getKeyCode() == rightKey) {
-            if (getCurrentDirection() != Direction.LEFT){
-                currentDirection = Direction.RIGHT;
-            }
-        } else if (e.getKeyCode() == leftKey) {
-            if (getCurrentDirection() != Direction.RIGHT){
-                currentDirection = Direction.LEFT;
-            }
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        
     }
 
     private void moveUp(int moveAmount){
@@ -141,5 +134,23 @@ public class Player implements KeyListener {
     private void moveLeft(int moveAmount) {
         centreX -= moveAmount;
     }
+
+    @Override
+    public void tick() {
+        movePlayer();
+    }
+
+    //TODO framesRendered???????? 
+    //is it Okay?
+    @Override
+    public void render(Graphics2D graphics, int framesRendered) {
+        for (int frameIndex = 0; frameIndex < framesRendered; frameIndex++) {
+                graphics.setColor(this.getColor());
+                graphics.fillRect(this.getPathX().get(frameIndex), this.getPathY().get(frameIndex),
+                        PLAYER_FILL_WIDTH, PLAYER_FILL_HEIGHT);
+            
+        }
+    }
+
     
 }
