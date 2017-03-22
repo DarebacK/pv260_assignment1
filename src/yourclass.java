@@ -12,13 +12,8 @@ import java.util.ArrayList;
 public class yourclass {
         
     private Window window;
-    //private ArrayList<Player> players = new ArrayList();
-    //private int framesRendered = 0;
-    //private int moveAmount = 5;
-    private boolean running;
-	
-    private GameObjectHandler gameObjectHandler;
-    
+    private boolean running;	
+    private GameObjectHandler gameObjectHandler;    
     protected ScreenManager screenManager;
 	
     public void stop(){
@@ -33,11 +28,10 @@ public class yourclass {
             screenManager.restoreScreen();
         }
     }
-	
-
+    
     public void init() {
         
-        //maybe it is better to create in constuctor
+        //TODO maybe it is better to create in constuctor
         gameObjectHandler=new GameObjectHandler();
         
         screenManager = new ScreenManager();
@@ -49,8 +43,9 @@ public class yourclass {
         window.setForeground(Color.RED);
         window.setCursor(window.getToolkit().createCustomCursor(new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),"null")); 
         window.addKeyListener(new KeyInput(gameObjectHandler));
+        window.addMouseListener(new MouseInput(gameObjectHandler));
+	window.addMouseMotionListener(new MouseInput(gameObjectHandler));
         running = true;
-
         
         gameObjectHandler.addGameObject(new Player(40, 40, Direction.RIGHT,
         KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, Color.green, screenManager.getHeight(), screenManager.getWidth()));
@@ -68,7 +63,6 @@ public class yourclass {
 
     public void draw(Graphics2D graphics) {
         gameObjectHandler.tick();
-        //movePlayers();
 
         if(gameObjectHandler.checkForCollisions())
         {
@@ -77,8 +71,6 @@ public class yourclass {
         }
         
         clearGameWindow(graphics);
-        //renderPlayers(graphics);      
-        
         gameObjectHandler.render(graphics);      
         
     }

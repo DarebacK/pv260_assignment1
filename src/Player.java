@@ -150,7 +150,5 @@ public class Player extends GameObject {
                         PLAYER_FILL_WIDTH, PLAYER_FILL_HEIGHT);
             
         }
-    }
-
-    
+    }    
 }

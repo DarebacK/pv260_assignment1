@@ -22,7 +22,6 @@ public class  KeyInput extends KeyAdapter {
     }
     
     public void keyPressed(KeyEvent e) {
-        int key =e.getKeyCode();
         
         for (int i = 0; i < gameObjectHandler.gameobjects.size(); i++) {
             
@@ -51,7 +50,7 @@ public class  KeyInput extends KeyAdapter {
         }
     }
     
-     public void keyReleased(KeyEvent e) {
+    public void keyReleased(KeyEvent e) {
          int key =e.getKeyCode();
      }
 }
