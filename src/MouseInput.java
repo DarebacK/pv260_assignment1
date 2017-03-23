@@ -1,4 +1,5 @@
 
+import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -15,34 +16,82 @@ import java.awt.event.MouseEvent;
 public class MouseInput extends MouseAdapter {
 
     private GameObjectHandler gameObjectHandler;
-    int x, y;
     
     public MouseInput(GameObjectHandler gameObjectHandler)
     {
         this.gameObjectHandler=gameObjectHandler;
     }
     
-    public void mousePressed(MouseEvent e) {
-      x = e.getX();
-      y = e.getY();
+    public void mousePressed(MouseEvent e) {        
+        
+        for (int i = 0; i < gameObjectHandler.gameobjects.size(); i++) {
+        GameObject tempObject=gameObjectHandler.gameobjects.get(i); 
+            if (isPathContainPoint(tempObject, e.getX(), e.getY())) {
+                if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
+                    tempObject.currentDirection=getDirectionOnLeftButtonClick(tempObject.currentDirection);
+                }
+                else if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0)            {
+                    tempObject.currentDirection=getDirectionOnRightButtonClick(tempObject.currentDirection);
+                }
+            }
+        }
     }
     
-    public void mouseDragged(MouseEvent e) {
-        int dx = e.getX() - x;
-        int dy = e.getY() - y;
-        for (int i = 0; i < gameObjectHandler.gameobjects.size(); i++) {
-            
-            GameObject tempObject=gameObjectHandler.gameobjects.get(i);            
-            //TODO this should be changed somehow
-            if(i==0) //first player which is moving 
+    private Direction getDirectionOnLeftButtonClick(Direction currentDirection)
+    {
+        if(currentDirection==Direction.UP)
+        {            
+            return Direction.LEFT;
+        }
+        else if(currentDirection==Direction.RIGHT)
+        {            
+            return Direction.UP;
+        }
+        else if(currentDirection==Direction.DOWN)
+        {            
+            return Direction.RIGHT;
+        }
+        else 
+        {            
+            return Direction.DOWN;
+        }
+    }
+    
+    private Direction getDirectionOnRightButtonClick(Direction currentDirection)
+    {
+        if(currentDirection==Direction.UP)
+        {            
+            return Direction.RIGHT;
+        }
+        else if(currentDirection==Direction.RIGHT)
+        {            
+            return Direction.DOWN;
+        }
+        else if(currentDirection==Direction.DOWN)
+        {            
+            return Direction.LEFT;
+        }
+        else 
+        {            
+            return Direction.UP;
+        }
+    }
+    
+    private boolean isPathContainPoint(GameObject tempObject, int x, int y)
+    {
+        boolean pathXContain=false;
+        boolean pathyContain=false;
+        
+        for (int i = -5; i < 5; i++) {
+            if(!pathXContain)
             {
-                if (tempObject.getCentreX()==x && tempObject.getCentreY()==y ) {
-                    tempObject.centreX += dx;
-                    tempObject.centreY += dy;
-                }
-            x += dx;
-            y += dy;
+                pathXContain=tempObject.getPathX().contains(x+i);
             }
-        }    
+            if(!pathyContain)
+            {
+                pathyContain=tempObject.getPathY().contains(y+i);
+            }
+        }
+        return pathyContain && pathXContain;
     }
 }
