@@ -1,6 +1,5 @@
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.DisplayMode;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -57,8 +56,7 @@ public abstract class Engine {
         window.setFont(new Font("Arial",Font.PLAIN,20));
         window.setBackground(Color.WHITE);
         window.setForeground(Color.RED);
-        //window.setCursor(window.getToolkit().createCustomCursor(new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),"null"));
-        window.setCursor(Cursor.getDefaultCursor());
+        window.setCursor(window.getToolkit().createCustomCursor(new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),"null"));
     }
 
     private void draw(Graphics2D graphics) {

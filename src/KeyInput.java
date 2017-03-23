@@ -25,11 +25,12 @@ public class  KeyInput extends KeyAdapter {
         
         for (int i = 0; i < gameObjectHandler.gameobjects.size(); i++) {
             
-            GameObject tempObject=gameObjectHandler.gameobjects.get(i);            
+            GameObject tempObject=gameObjectHandler.gameobjects.get(i);  
+            
             if (e.getKeyCode() == tempObject.upKey) {
                 if (tempObject.getCurrentDirection() != Direction.DOWN){
                 tempObject.currentDirection = Direction.UP;
-            }
+                }
             } else if (e.getKeyCode() == tempObject.downKey) {
                 if (tempObject.getCurrentDirection()!= Direction.UP){
                 tempObject.currentDirection = Direction.DOWN;
@@ -48,5 +49,5 @@ public class  KeyInput extends KeyAdapter {
     
     public void keyReleased(KeyEvent e) {
          int key =e.getKeyCode();
-    }
+     }
 }
