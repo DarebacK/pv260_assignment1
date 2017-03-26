@@ -1,4 +1,8 @@
+package Game;
 
+
+import Engine.GameObject;
+import Engine.GameObjectHandler;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -23,24 +27,24 @@ public class  KeyInput extends KeyAdapter {
     
     public void keyPressed(KeyEvent e) {
         
-        for (int i = 0; i < gameObjectHandler.gameobjects.size(); i++) {
+        for (int i = 0; i < gameObjectHandler.getGameobjects().size(); i++) {
             
-            GameObject tempObject=gameObjectHandler.gameobjects.get(i);            
-            if (e.getKeyCode() == tempObject.upKey) {
-                if (tempObject.getCurrentDirection() != Direction.DOWN){
-                tempObject.currentDirection = Direction.UP;
+            Player tempPlayer= (Player) gameObjectHandler.getGameobjects().get(i);            
+            if (e.getKeyCode() == tempPlayer.upKey) {
+                if (tempPlayer.getCurrentDirection() != Direction.DOWN){
+                    tempPlayer.setCurrentDirection(Direction.UP);
             }
-            } else if (e.getKeyCode() == tempObject.downKey) {
-                if (tempObject.getCurrentDirection()!= Direction.UP){
-                tempObject.currentDirection = Direction.DOWN;
+            } else if (e.getKeyCode() == tempPlayer.downKey) {
+                if (tempPlayer.getCurrentDirection()!= Direction.UP){
+                    tempPlayer.setCurrentDirection(Direction.DOWN);
                 }
-            } else if (e.getKeyCode() == tempObject.rightKey) {
-                if (tempObject.getCurrentDirection() != Direction.LEFT){
-                tempObject.currentDirection = Direction.RIGHT;
+            } else if (e.getKeyCode() == tempPlayer.rightKey) {
+                if (tempPlayer.getCurrentDirection() != Direction.LEFT){
+                    tempPlayer.setCurrentDirection(Direction.RIGHT);
                 }
-            } else if (e.getKeyCode() == tempObject.leftKey) {
-                if (tempObject.getCurrentDirection() != Direction.RIGHT){
-                tempObject.currentDirection = Direction.LEFT;
+            } else if (e.getKeyCode() == tempPlayer.leftKey) {
+                if (tempPlayer.getCurrentDirection() != Direction.RIGHT){
+                    tempPlayer.setCurrentDirection(Direction.LEFT);
                 }                    
             }
         }

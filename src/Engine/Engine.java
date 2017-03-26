@@ -1,4 +1,5 @@
-import java.awt.Canvas;
+package Engine;
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.DisplayMode;
@@ -7,23 +8,21 @@ import java.awt.Graphics2D;
 import java.awt.HeadlessException;
 import java.awt.Point;
 import java.awt.Window;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public abstract class Engine {
         
-    protected Window window;
-    protected GameObjectHandler gameObjectHandler;    
+    protected Window window;   
     protected ScreenManager screenManager;
     protected Color clearGameWindowColor;
+    protected Graphics2D graphics;
     
     private boolean running;	
 
+    private static final int SLEEP_AMOUNT_IN_MILIS = 20;
+    
     protected Engine() {
         running = false;
-        
-        gameObjectHandler= new GameObjectHandler();
+
         screenManager = new ScreenManager();
         clearGameWindowColor = Color.BLACK;
     }
@@ -37,6 +36,7 @@ public abstract class Engine {
             init();
             gameLoop();
         }finally{
+            graphics.dispose();
             screenManager.restoreScreen();
         }
     }
@@ -54,14 +54,19 @@ public abstract class Engine {
     }
 
     private void initDefaultWindowGraphicSettings() throws HeadlessException, IndexOutOfBoundsException {
-        window.setFont(new Font("Arial",Font.PLAIN,20));
+        window.setFont(new Font("Arial",Font.PLAIN, 20));
         window.setBackground(Color.WHITE);
         window.setForeground(Color.RED);
         //window.setCursor(window.getToolkit().createCustomCursor(new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),"null"));
         window.setCursor(Cursor.getDefaultCursor());
     }
 
-    private void draw(Graphics2D graphics) {
+    private void draw() {
+        screenManager.update(); 
+        //TODO: according to feedback Graphics2D graphics = screenManager.getGraphics() 
+        //      isn't supposed to be called every iteration, can't figure how to fix it more than this
+        graphics = screenManager.getGraphics();
+        
         clearGameWindow(graphics);
         
         onDraw(graphics);    
@@ -79,17 +84,17 @@ public abstract class Engine {
         while (running){
             long timePassed = System.currentTimeMillis() - cumulativeTime;
             cumulativeTime += timePassed;
-            update(timePassed);
-            gameObjectHandler.tick();
-            Graphics2D graphics = screenManager.getGraphics();
-            draw(graphics);
-            graphics.dispose();
-            screenManager.update();
-
-            try{
-                Thread.sleep(20);
-            }catch(Exception ex){}
+            onTick(timePassed);
+            draw();
+            
+            sleep();
         }
+    }
+
+    private void sleep() {
+        try{
+            Thread.sleep(SLEEP_AMOUNT_IN_MILIS);
+        }catch(Exception ex){}
     }
     
     protected final int getScreenWidth(){
@@ -100,7 +105,7 @@ public abstract class Engine {
         return screenManager.getHeight();
     }	
     
-    protected void update(long timePassed) {}
+    protected void onTick(long timePassed) {}
 	
     protected void onDraw(Graphics2D graphics) {}
     

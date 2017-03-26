@@ -1,3 +1,6 @@
+package Game;
+
+import Engine.GameObject;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -19,41 +22,50 @@ import java.util.List;
  */
 public class Player extends GameObject {
     
+    protected int upKey;
+    protected int rightKey;
+    protected int downKey;
+    protected int leftKey;
     
-    private Color color;
+    protected Direction currentDirection;
+    protected Color color;
+    protected List<Integer> pathX = new ArrayList();
+    protected List<Integer> pathY = new ArrayList();
     
-    private int moveSpeed = 5;
-
-    public Player(int startPositionX, int startPositionY, Direction currentDirection,
+    private final int MOVE_SPEED = 5;
+    
+    public Player(int centreX, int centreY, Direction currentDirection,
             int upKey, int rightKey, int downKey, int leftKey, Color color) {
-        super(startPositionX, startPositionY, currentDirection, upKey, rightKey, downKey, leftKey);
-     
+        super(centreX, centreY);
+        this.upKey = upKey;
+        this.rightKey = rightKey;
+        this.downKey = downKey;
+        this.leftKey = leftKey;
+        this.currentDirection = currentDirection;
         this.color = color;
     }
     
-    private void movePlayer(){
-        move(moveSpeed);
-    }   
     
-    public void move(int moveAmount){
+    
+    private void movePlayer(){
         switch(currentDirection){
             case UP: 
-                moveUp(moveAmount);
+                moveUp(MOVE_SPEED);
                 break;
                 
             case RIGHT:
-                moveRight(moveAmount);
+                moveRight(MOVE_SPEED);
                 break;
                 
             case DOWN:
-                moveDown(moveAmount);
+                moveDown(MOVE_SPEED);
                 break;
                 
             case LEFT:
-                moveLeft(moveAmount);
+                moveLeft(MOVE_SPEED);
                 break;
         }
-    }
+    }   
 
     public Color getColor() {
         return color;
@@ -75,6 +87,7 @@ public class Player extends GameObject {
         centreX -= moveAmount;
     }
 
+    @Override
     public void tick() {
         movePlayer();
         rememberPath();
@@ -84,5 +97,22 @@ public class Player extends GameObject {
         pathX.add(centreX);
         pathY.add(centreY);
     }   
+
+    public Direction getCurrentDirection() {
+        return currentDirection;
+    }
+
+    public void setCurrentDirection(Direction currentDirection) {
+        this.currentDirection = currentDirection;
+    }
+    
+    public List<Integer> getPathX() {
+        return pathX;
+    }
+
+    public List<Integer> getPathY() {
+        return pathY;
+    }
+    
 }
 

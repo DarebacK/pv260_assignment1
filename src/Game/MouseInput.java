@@ -1,4 +1,8 @@
+package Game;
 
+
+import Engine.GameObject;
+import Engine.GameObjectHandler;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -24,14 +28,16 @@ public class MouseInput extends MouseAdapter {
     
     public void mousePressed(MouseEvent e) {        
         
-        for (int i = 0; i < gameObjectHandler.gameobjects.size(); i++) {
-        GameObject tempObject=gameObjectHandler.gameobjects.get(i); 
-            if (isPathContainPoint(tempObject, e.getX(), e.getY())) {
+        for (int i = 0; i < gameObjectHandler.getGameobjects().size(); i++) {
+        Player tempPlayer= (Player) gameObjectHandler.getGameobjects().get(i); 
+            if (isPathContainPoint(tempPlayer, e.getX(), e.getY())) {
                 if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
-                    tempObject.currentDirection=getDirectionOnLeftButtonClick(tempObject.currentDirection);
+                    //TODO: this doesn't look good, maybe we can create moveCW/moveCCW in Player
+                    tempPlayer.setCurrentDirection(getDirectionOnLeftButtonClick(tempPlayer.getCurrentDirection()));
                 }
                 else if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0)            {
-                    tempObject.currentDirection=getDirectionOnRightButtonClick(tempObject.currentDirection);
+                    //TODO: same as above
+                    tempPlayer.setCurrentDirection(getDirectionOnRightButtonClick(tempPlayer.getCurrentDirection()));
                 }
             }
         }
@@ -77,7 +83,7 @@ public class MouseInput extends MouseAdapter {
         }
     }
     
-    private boolean isPathContainPoint(GameObject tempObject, int x, int y)
+    private boolean isPathContainPoint(Player tempPlayer, int x, int y)
     {
         boolean pathXContain=false;
         boolean pathyContain=false;
@@ -85,11 +91,11 @@ public class MouseInput extends MouseAdapter {
         for (int i = -5; i < 5; i++) {
             if(!pathXContain)
             {
-                pathXContain=tempObject.getPathX().contains(x+i);
+                pathXContain=tempPlayer.getPathX().contains(x+i);
             }
             if(!pathyContain)
             {
-                pathyContain=tempObject.getPathY().contains(y+i);
+                pathyContain=tempPlayer.getPathY().contains(y+i);
             }
         }
         return pathyContain && pathXContain;

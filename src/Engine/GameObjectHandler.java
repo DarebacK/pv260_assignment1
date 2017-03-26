@@ -1,3 +1,5 @@
+package Engine;
+
 
 import java.awt.Graphics2D;
 import java.util.LinkedList;
@@ -14,12 +16,12 @@ import java.util.List;
  * @author Mari
  */
 public class GameObjectHandler {
-    List<GameObject> gameobjects=new LinkedList<GameObject>();      
+    List<GameObject> gameobjects = new LinkedList<GameObject>();      
     
     public void tick()
     {
         for (int i = 0; i < gameobjects.size(); i++) {
-            GameObject tempObject=gameobjects.get(i);
+            GameObject tempObject = gameobjects.get(i);
             tempObject.tick();
         }
     }
