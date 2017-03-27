@@ -58,18 +58,18 @@ public abstract class Engine {
         window.setBackground(Color.WHITE);
         window.setForeground(Color.RED);
         //window.setCursor(window.getToolkit().createCustomCursor(new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),"null"));
-        window.setCursor(Cursor.getDefaultCursor());
+        //window.setCursor(Cursor.getDefaultCursor());
     }
 
     private void draw() {
-        screenManager.update(); 
+        //screenManager.update(); 
         //TODO: according to feedback Graphics2D graphics = screenManager.getGraphics() 
         //      isn't supposed to be called every iteration, can't figure how to fix it more than this
-        graphics = screenManager.getGraphics();
+        //graphics = screenManager.getGraphics();
         
-        clearGameWindow(graphics);
-        
-        onDraw(graphics);    
+        clearGameWindow(graphics);        
+        onDraw(graphics);            
+        screenManager.update(); 
     }
 
     private void clearGameWindow(Graphics2D graphics) {
@@ -80,20 +80,24 @@ public abstract class Engine {
     private void gameLoop(){
         long startTime = System.currentTimeMillis();
         long cumulativeTime = startTime;
+        graphics = screenManager.getGraphics();
 
         while (running){
             long timePassed = System.currentTimeMillis() - cumulativeTime;
-            cumulativeTime += timePassed;
-            onTick(timePassed);
+            cumulativeTime += timePassed;            
+            
+            onTick(timePassed);            
             draw();
             
-            sleep();
+            //TODO timePassed should be connected somehow sleep() parameter
+            //sleep(timePassed);
+            sleep(SLEEP_AMOUNT_IN_MILIS);
         }
     }
 
-    private void sleep() {
+    private void sleep(long timePassed) {
         try{
-            Thread.sleep(SLEEP_AMOUNT_IN_MILIS);
+            Thread.sleep(timePassed);
         }catch(Exception ex){}
     }
     

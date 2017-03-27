@@ -31,12 +31,12 @@ public class Model {
     }
     
     public void init() {
-        initControls();  
+        //initControls();  
         initPlayers();
     }
     
     public void tick(long timePassed) {
-        gameObjectHandler.tick();
+        gameObjectHandler.tick(timePassed);
         checkPlayersOnEdges();
         checkForCollisions();
     }
@@ -46,9 +46,9 @@ public class Model {
     }
     
     private void initControls() {
-        window.addKeyListener(new KeyInput(gameObjectHandler));
-        window.addMouseListener(new MouseInput(gameObjectHandler));
-        window.addMouseMotionListener(new MouseInput(gameObjectHandler));
+        //window.addKeyListener(new KeyInput(gameObjectHandler));
+        //window.addMouseListener(new MouseInput(gameObjectHandler));
+        //window.addMouseMotionListener(new MouseInput(gameObjectHandler));
     }
 
     public void addCollisionListener(CollisionListener toAdd){
@@ -56,14 +56,22 @@ public class Model {
     }
     
     private void initPlayers() {
-        gameObjectHandler.addGameObject(new Player(40, 40, Direction.RIGHT,
-                KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, Color.green));
         
-        gameObjectHandler.addGameObject(new Player(600, 440, Direction.LEFT,
-                KeyEvent.VK_W, KeyEvent.VK_D, KeyEvent.VK_S, KeyEvent.VK_A, Color.red));
+        Player player1=new Player(40, 40, Direction.RIGHT,
+                KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, Color.green);
+        window.addKeyListener(new KeyInput(player1));        
+        gameObjectHandler.addGameObject(player1);
         
-        gameObjectHandler.addGameObject(new Player(40, 840, Direction.RIGHT,
-                KeyEvent.VK_I, KeyEvent.VK_L, KeyEvent.VK_K, KeyEvent.VK_J, Color.yellow));
+        Player player2=new Player(600, 440, Direction.LEFT,
+                KeyEvent.VK_W, KeyEvent.VK_D, KeyEvent.VK_S, KeyEvent.VK_A, Color.red);
+        window.addKeyListener(new KeyInput(player2)); 
+        gameObjectHandler.addGameObject(player2);
+        
+        Player player3=new Player(40, 840, Direction.RIGHT,
+                KeyEvent.VK_I, KeyEvent.VK_L, KeyEvent.VK_K, KeyEvent.VK_J, Color.yellow);        
+        window.addMouseListener(new MouseInput(player3));
+        window.addMouseMotionListener(new MouseInput(player3));        
+        gameObjectHandler.addGameObject(player3);
     }
     
     private void checkForCollisions() {

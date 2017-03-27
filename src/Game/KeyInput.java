@@ -18,18 +18,16 @@ import java.awt.event.KeyEvent;
  */
 public class  KeyInput extends KeyAdapter {
     
-    private GameObjectHandler gameObjectHandler;
+    private Player player;
     
-    public KeyInput(GameObjectHandler gameObjectHandler)
+    public KeyInput(Player player)
     {
-        this.gameObjectHandler=gameObjectHandler;
+        this.player=player;
     }
     
     public void keyPressed(KeyEvent e) {
-        
-        for (int i = 0; i < gameObjectHandler.getGameobjects().size(); i++) {
             
-            Player tempPlayer= (Player) gameObjectHandler.getGameobjects().get(i);            
+            Player tempPlayer= (Player) player;            
             if (e.getKeyCode() == tempPlayer.upKey) {
                 if (tempPlayer.getCurrentDirection() != Direction.DOWN){
                     tempPlayer.setCurrentDirection(Direction.UP);
@@ -47,7 +45,6 @@ public class  KeyInput extends KeyAdapter {
                     tempPlayer.setCurrentDirection(Direction.LEFT);
                 }                    
             }
-        }
     }
     
     public void keyReleased(KeyEvent e) {

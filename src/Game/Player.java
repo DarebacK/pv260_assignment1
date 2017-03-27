@@ -47,22 +47,27 @@ public class Player extends GameObject {
     
     
     
-    private void movePlayer(){
+    private void movePlayer(long timespeed){
+        
+        //something to do 
+        //MOVE_SPEED should be depend on timespeed
+        
+        timespeed=MOVE_SPEED;
         switch(currentDirection){
             case UP: 
-                moveUp(MOVE_SPEED);
+                moveUp(timespeed);
                 break;
                 
             case RIGHT:
-                moveRight(MOVE_SPEED);
+                moveRight(timespeed);
                 break;
                 
             case DOWN:
-                moveDown(MOVE_SPEED);
+                moveDown(timespeed);
                 break;
                 
             case LEFT:
-                moveLeft(MOVE_SPEED);
+                moveLeft(timespeed);
                 break;
         }
     }   
@@ -71,25 +76,25 @@ public class Player extends GameObject {
         return color;
     }
 
-    private void moveUp(int moveAmount){
+    private void moveUp(long moveAmount){
         centreY -= moveAmount;
     }
     
-    private void moveRight(int moveAmount){
+    private void moveRight(long moveAmount){
         centreX += moveAmount;
     }
     
-    private void moveDown(int moveAmount) {
+    private void moveDown(long moveAmount) {
         centreY += moveAmount;
     }
     
-    private void moveLeft(int moveAmount) {
+    private void moveLeft(long moveAmount) {
         centreX -= moveAmount;
     }
 
     @Override
-    public void tick() {
-        movePlayer();
+    public void tick(long timespeed) {
+        movePlayer(timespeed);
         rememberPath();
     }   
     

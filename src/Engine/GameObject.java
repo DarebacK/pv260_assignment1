@@ -25,7 +25,7 @@ public abstract class GameObject {
         this.centreY=centreY;
     }
     
-    public abstract void tick();
+    public abstract void tick(long timePassed);
     
     public void setCentreX(int centreX) {
         this.centreX = centreX;
