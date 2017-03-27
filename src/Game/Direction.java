@@ -11,10 +11,10 @@ package Game;
  * @author Pavel Morcinek (433491@mail.muni.cz)
  */
 public enum Direction {
-    UP(1),
-    RIGHT(2),
-    DOWN(3),
-    LEFT(4);
+    UP(0),
+    RIGHT(1),
+    DOWN(2),
+    LEFT(3);
     
     private final int dir;
     
@@ -23,12 +23,12 @@ public enum Direction {
     }
     
     public Direction add() {
-        if(this.dir==4) return Direction.values()[0];
-        return Direction.values()[this.dir];
+        if(this.dir==3) return Direction.values()[0];
+        return Direction.values()[this.dir+1];
     }
     
     public Direction min() {        
-        if(this.dir==1) return Direction.values()[3];
-        return Direction.values()[this.dir-2];
+        if(this.dir==0) return Direction.values()[3];
+        return Direction.values()[this.dir-1];
     }
 }
