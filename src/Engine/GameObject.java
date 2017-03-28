@@ -1,10 +1,5 @@
 package Engine;
 
-
-import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -16,7 +11,15 @@ import java.util.List;
  * @author Mari
  */
 public abstract class GameObject {
+
+    /**
+     *player's X coordinates 
+     */
     protected int centreX;
+
+    /**
+     *player's Y coordinates 
+     */
     protected int centreY;
     
     public GameObject(int centreX, int centreY)
@@ -25,6 +28,11 @@ public abstract class GameObject {
         this.centreY=centreY;
     }
     
+    /**
+     * This method should be override in child class 
+     * This method will update player
+     * @param deltaTime
+     */
     public abstract void tick(double deltaTime);
     
     public void setCentreX(int centreX) {

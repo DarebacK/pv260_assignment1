@@ -1,24 +1,20 @@
 package Game;
 
-
-import Engine.GameObject;
-import Engine.GameObjectHandler;
 import java.awt.Window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Mari
  */
 public class KeyController extends KeyAdapter implements Controller {
+
     private Player controlledPlayer;
     private int upKey;
     private int rightKey;
@@ -32,44 +28,37 @@ public class KeyController extends KeyAdapter implements Controller {
         this.downKey = downKey;
         this.leftKey = leftKey;
     }
-    
+
+    /**
+     *
+     * @param e
+     * Method is responsible for changing direction of the player on keyboard's key pressed
+     */
     @Override
     public void keyPressed(KeyEvent e) {
-            
-            Player tempPlayer =  controlledPlayer;            
-            if (e.getKeyCode() == upKey) {
-                if (tempPlayer.getCurrentDirection() != Direction.DOWN){
-                    tempPlayer.setCurrentDirection(Direction.UP);
+
+        Player tempPlayer = controlledPlayer;
+        if (e.getKeyCode() == upKey) {
+            if (tempPlayer.getCurrentDirection() != Direction.DOWN) {
+                tempPlayer.setCurrentDirection(Direction.UP);
             }
-            } else if (e.getKeyCode() == downKey) {
-                if (tempPlayer.getCurrentDirection()!= Direction.UP){
-                    tempPlayer.setCurrentDirection(Direction.DOWN);
-                }
-            } else if (e.getKeyCode() == rightKey) {
-                if (tempPlayer.getCurrentDirection() != Direction.LEFT){
-                    tempPlayer.setCurrentDirection(Direction.RIGHT);
-                }
-            } else if (e.getKeyCode() == leftKey) {
-                if (tempPlayer.getCurrentDirection() != Direction.RIGHT){
-                    tempPlayer.setCurrentDirection(Direction.LEFT);
-                }                    
+        } else if (e.getKeyCode() == downKey) {
+            if (tempPlayer.getCurrentDirection() != Direction.UP) {
+                tempPlayer.setCurrentDirection(Direction.DOWN);
             }
+        } else if (e.getKeyCode() == rightKey) {
+            if (tempPlayer.getCurrentDirection() != Direction.LEFT) {
+                tempPlayer.setCurrentDirection(Direction.RIGHT);
+            }
+        } else if (e.getKeyCode() == leftKey) {
+            if (tempPlayer.getCurrentDirection() != Direction.RIGHT) {
+                tempPlayer.setCurrentDirection(Direction.LEFT);
+            }
+        }
     }
 
     @Override
     public void init(Window window) {
         window.addKeyListener(this);
     }
-    
-    @Override
-    public void keyReleased(KeyEvent e) {
-         
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        
-    }
-    
-    
 }

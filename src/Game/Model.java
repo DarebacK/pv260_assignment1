@@ -12,7 +12,6 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import java.awt.Window;
 import java.util.ArrayList;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  *
@@ -30,10 +29,19 @@ public class Model {
         this.window = window;
     }
     
+    /**
+     *Initialization and create new players
+     */
     public void init() {
         initPlayers();
     }
     
+    /**
+     *
+     * @param deltaTime
+     * Method is responsible for updating player and their path.
+     * Method is also responsible for checking collision
+     */
     public void tick(double deltaTime) {
         gameObjectHandler.tick(deltaTime);
         checkPlayersOnEdges();
@@ -55,7 +63,7 @@ public class Model {
         
         createPlayer(player1, new KeyController(player1, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT));
         createPlayer(player2, new KeyController(player2, KeyEvent.VK_W, KeyEvent.VK_D, KeyEvent.VK_S, KeyEvent.VK_A));
-        //createPlayer(player3, new MouseController(player3));
+        createPlayer(player3, new MouseController(player3));
     }
     
     private void createPlayer(Player player, Controller controller) {       

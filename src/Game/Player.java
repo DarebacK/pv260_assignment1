@@ -2,11 +2,6 @@ package Game;
 
 import Engine.GameObject;
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +18,15 @@ import java.util.List;
 public class Player extends GameObject { 
     protected Direction currentDirection;
     protected Color color;
+
+    /**
+     *Variable is used to save player's X coordinates for every movement
+     */
     protected List<Integer> pathX = new ArrayList();
+
+    /**
+     *Variable is used to save player's Y coordinates for every movement
+     */
     protected List<Integer> pathY = new ArrayList();
     
     private final int MOVE_SPEED = 5;

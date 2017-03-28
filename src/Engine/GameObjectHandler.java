@@ -1,7 +1,5 @@
 package Engine;
 
-
-import java.awt.Graphics2D;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,35 +8,31 @@ import java.util.List;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Mari
  */
 public class GameObjectHandler {
-    List<GameObject> gameobjects = new LinkedList<GameObject>();      
-    
-    public void tick(double deltaTime)
-    {
+
+    List<GameObject> gameobjects = new LinkedList<GameObject>();
+
+    public void tick(double deltaTime) {
         for (int i = 0; i < gameobjects.size(); i++) {
             GameObject tempObject = gameobjects.get(i);
             tempObject.tick(deltaTime);
         }
     }
-    
-    public void addGameObject(GameObject gameObject)
-    {
+
+    public void addGameObject(GameObject gameObject) {
         this.gameobjects.add(gameObject);
     }
-    
-    public void removeGameObject(GameObject gameObject)
-    {
+
+    public void removeGameObject(GameObject gameObject) {
         this.gameobjects.remove(gameObject);
     }
 
     public List<GameObject> getGameobjects() {
         return gameobjects;
     }
-    
-}
 
+}
