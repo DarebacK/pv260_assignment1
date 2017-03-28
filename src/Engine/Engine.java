@@ -18,7 +18,8 @@ public abstract class Engine {
     
     private boolean running;	
 
-    private static final int SLEEP_AMOUNT_IN_MILIS = 20;
+    private static final int TARGET_FPS = 60;
+    private static final long OPTIMAL_TIME_IN_MILIS = 1000 / TARGET_FPS;
     
     protected Engine() {
         running = false;
@@ -83,15 +84,15 @@ public abstract class Engine {
         graphics = screenManager.getGraphics();
 
         while (running){
-            long timePassed = System.currentTimeMillis() - cumulativeTime;
+            long loopBeginTime = System.currentTimeMillis();
+            long timePassed = loopBeginTime - cumulativeTime;
+            double deltaTime = (double) timePassed / OPTIMAL_TIME_IN_MILIS;
             cumulativeTime += timePassed;            
             
-            onTick(timePassed);            
+            onTick(deltaTime);            
             draw();
             
-            //TODO timePassed should be connected somehow sleep() parameter
-            //sleep(timePassed);
-            sleep(SLEEP_AMOUNT_IN_MILIS);
+            sleep(loopBeginTime - System.currentTimeMillis() + OPTIMAL_TIME_IN_MILIS);
         }
     }
 
@@ -109,7 +110,7 @@ public abstract class Engine {
         return screenManager.getHeight();
     }	
     
-    protected void onTick(long timePassed) {}
+    protected void onTick(double deltaTime) {}
 	
     protected void onDraw(Graphics2D graphics) {}
     

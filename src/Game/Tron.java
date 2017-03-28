@@ -33,8 +33,8 @@ public class Tron extends Engine implements CollisionListener {
     }
 
     @Override
-    protected void onTick(long timePassed) {
-        model.tick(timePassed);
+    protected void onTick(double deltaTime) {
+        model.tick(deltaTime);
     }
 
     @Override

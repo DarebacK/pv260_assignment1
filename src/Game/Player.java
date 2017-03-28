@@ -20,13 +20,7 @@ import java.util.List;
  *
  * @author Pavel Morcinek (433491@mail.muni.cz)
  */
-public class Player extends GameObject {
-    
-    protected int upKey;
-    protected int rightKey;
-    protected int downKey;
-    protected int leftKey;
-    
+public class Player extends GameObject { 
     protected Direction currentDirection;
     protected Color color;
     protected List<Integer> pathX = new ArrayList();
@@ -34,40 +28,29 @@ public class Player extends GameObject {
     
     private final int MOVE_SPEED = 5;
     
-    public Player(int centreX, int centreY, Direction currentDirection,
-            int upKey, int rightKey, int downKey, int leftKey, Color color) {
+    public Player(int centreX, int centreY, Direction currentDirection, Color color) {
         super(centreX, centreY);
-        this.upKey = upKey;
-        this.rightKey = rightKey;
-        this.downKey = downKey;
-        this.leftKey = leftKey;
         this.currentDirection = currentDirection;
         this.color = color;
     }
     
-    
-    
-    private void movePlayer(long timespeed){
-        
-        //something to do 
-        //MOVE_SPEED should be depend on timespeed
-        
-        timespeed=MOVE_SPEED;
+    private void movePlayer(double deltaTime){        
+        int moveAmount = (int) (deltaTime * MOVE_SPEED);
         switch(currentDirection){
             case UP: 
-                moveUp(timespeed);
+                moveUp(moveAmount);
                 break;
                 
             case RIGHT:
-                moveRight(timespeed);
+                moveRight(moveAmount);
                 break;
                 
             case DOWN:
-                moveDown(timespeed);
+                moveDown(moveAmount);
                 break;
                 
             case LEFT:
-                moveLeft(timespeed);
+                moveLeft(moveAmount);
                 break;
         }
     }   
@@ -93,8 +76,8 @@ public class Player extends GameObject {
     }
 
     @Override
-    public void tick(long timespeed) {
-        movePlayer(timespeed);
+    public void tick(double deltaTime) {
+        movePlayer(deltaTime);
         rememberPath();
     }   
     

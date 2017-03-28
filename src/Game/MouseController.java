@@ -3,9 +3,11 @@ package Game;
 
 import Engine.GameObject;
 import Engine.GameObjectHandler;
+import java.awt.Window;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,18 +19,18 @@ import java.awt.event.MouseEvent;
  *
  * @author Mari
  */
-public class MouseInput extends MouseAdapter {
+public class MouseController extends MouseAdapter implements Controller {
 
-    private Player player;
+    private Player controlledPlayer;
     
-    public MouseInput(Player player)
+    public MouseController(Player controlledPlayer)
     {
-        this.player=player;
+        this.controlledPlayer = controlledPlayer;
     }
     
     public void mousePressed(MouseEvent e) {        
         
-        Player tempPlayer= player; 
+        Player tempPlayer= controlledPlayer; 
                 if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
                     tempPlayer.setCurrentDirection(tempPlayer.currentDirection.min());
                 }
@@ -36,4 +38,11 @@ public class MouseInput extends MouseAdapter {
                     tempPlayer.setCurrentDirection(tempPlayer.currentDirection.add());
                 }
     }
+
+    @Override
+    public void init(Window window) {
+        window.addMouseListener(this);
+    }
+    
+    
 }

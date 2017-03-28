@@ -18,11 +18,11 @@ import java.util.List;
 public class GameObjectHandler {
     List<GameObject> gameobjects = new LinkedList<GameObject>();      
     
-    public void tick(long timePassed)
+    public void tick(double deltaTime)
     {
         for (int i = 0; i < gameobjects.size(); i++) {
             GameObject tempObject = gameobjects.get(i);
-            tempObject.tick(timePassed);
+            tempObject.tick(deltaTime);
         }
     }
     
