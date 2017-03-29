@@ -7,8 +7,10 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 /**
- *
+ * Class responsible for managing game graphics(screen),
+ * already implemented in task assignment
  * @author Mari
+ * @author Pavel Morcinek (433491@mail.muni.cz)
  */
 public class ScreenManager {
 
@@ -172,7 +174,6 @@ public class ScreenManager {
 
     /**
      *Method is call at the end of the game
-     *???????
      */
     public void restoreScreen() {
         Window window = graphicsDevice.getFullScreenWindow();

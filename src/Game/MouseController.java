@@ -5,18 +5,14 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
- *
+ * Controls a player by mouse buttons
  * @author Mari
+ * @author Pavel Morcinek (433491@mail.muni.cz)
  */
 public class MouseController extends MouseAdapter implements Controller {
 
-    private Player controlledPlayer;
+    private final Player controlledPlayer;
 
     public MouseController(Player controlledPlayer) {
         this.controlledPlayer = controlledPlayer;
@@ -38,6 +34,10 @@ public class MouseController extends MouseAdapter implements Controller {
         }
     }
 
+    /**
+     * Call this to let the controller initialize itself
+     * @param window 
+     */
     @Override
     public void init(Window window) {
         window.addMouseListener(this);

@@ -1,12 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Game;
 
-import Engine.GameObject;
-import Engine.GameObjectHandler;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -14,7 +7,8 @@ import java.awt.Window;
 import java.util.ArrayList;
 
 /**
- *
+ * Represents state of the game
+ * @author Mari
  * @author Pavel Morcinek (433491@mail.muni.cz)
  */
 public class Model {
@@ -52,6 +46,10 @@ public class Model {
         return gameObjectHandler.getGameobjects();
     }
 
+    /**
+     * Use this method if you want to receive collision callbacks
+     * @param toAdd 
+     */
     public void addCollisionListener(CollisionListener toAdd){
         collisionListeners.add(toAdd);
     }
@@ -97,6 +95,10 @@ public class Model {
         return false;
     }
     
+    /**
+     * Checks if players are on the edge, if yes, it calls swingPlayerToOtherSide
+     * with that player as parameter
+     */
     private void checkPlayersOnEdges() {
         List<GameObject> players = gameObjectHandler.getGameobjects();
         

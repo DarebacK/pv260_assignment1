@@ -1,17 +1,12 @@
 package Game;
 
-import Engine.GameObject;
 import Engine.Engine;
 import java.awt.Graphics2D;
 import java.util.List;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
- *
+ * Presentation part of the game
+ * @author Mari
  * @author Pavel Morcinek (433491@mail.muni.cz)
  */
 public class Tron extends Engine implements CollisionListener {
@@ -21,10 +16,23 @@ public class Tron extends Engine implements CollisionListener {
 
     private Model model;
 
+    /**
+     * Main method of the game
+     * @param args 
+     */
     public static void main(String[] args) {
         new Tron().run();
     }
 
+    /**
+     * Implementing method of CollisionListener interface, ends the game when called
+     */
+    @Override
+    public void onCollision() {
+        System.out.println("Collision detected, ending the game");
+        stop();
+    }
+    
     @Override
     protected void onTick(double deltaTime) {
         model.tick(deltaTime);
@@ -40,12 +48,6 @@ public class Tron extends Engine implements CollisionListener {
         model = new Model(window);
         model.init();
         model.addCollisionListener(this);
-    }
-
-    @Override
-    public void onCollision() {
-        System.out.println("Collision detected, ending the game");
-        stop();
     }
 
     private void renderAllPlayers(Graphics2D graphics) {

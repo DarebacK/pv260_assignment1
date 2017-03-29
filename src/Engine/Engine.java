@@ -8,8 +8,9 @@ import java.awt.HeadlessException;
 import java.awt.Window;
 
 /**
- *
+ * Game engine class responsible for managing gameLoop, draw and tick calls
  * @author Mari
+ * @author Pavel Morcinek (433491@mail.muni.cz)
  */
 public abstract class Engine {
 
@@ -49,75 +50,6 @@ public abstract class Engine {
         }
     }
 
-    private void init() {
-        DisplayMode displayMode = screenManager.findFirstCompatibaleMode();
-        screenManager.setFullScreen(displayMode);
-        window = screenManager.getFullScreenWindow();
-
-        initDefaultWindowGraphicSettings();
-
-        onInit();
-
-        running = true;
-    }
-
-    private void initDefaultWindowGraphicSettings() throws HeadlessException, IndexOutOfBoundsException {
-        window.setFont(new Font("Arial", Font.PLAIN, 20));
-        window.setBackground(Color.WHITE);
-        window.setForeground(Color.RED);
-    }
-
-    private void draw() {
-        //screenManager.update(); 
-        //TODO: according to feedback Graphics2D graphics = screenManager.getGraphics() 
-        //      isn't supposed to be called every iteration, can't figure how to fix it more than this
-        //graphics = screenManager.getGraphics();
-
-        clearGameWindow(graphics);
-        onDraw(graphics);
-        screenManager.update();
-    }
-
-    private void clearGameWindow(Graphics2D graphics) {
-        graphics.setColor(clearGameWindowColor);
-        graphics.fillRect(0, 0, screenManager.getWidth(), screenManager.getHeight());
-    }
-
-    private void gameLoop() {
-        long startTime = System.currentTimeMillis();
-        long cumulativeTime = startTime;
-        graphics = screenManager.getGraphics();
-
-        while (running) {
-            long loopBeginTime = System.currentTimeMillis();
-            long timePassed = loopBeginTime - cumulativeTime;
-            double deltaTime = (double) timePassed / OPTIMAL_TIME_IN_MILIS;
-            cumulativeTime += timePassed;
-
-            onTick(deltaTime);
-            draw();
-
-            sleep(loopBeginTime - System.currentTimeMillis() + OPTIMAL_TIME_IN_MILIS);
-        }
-    }
-
-    private void sleep(long timePassed) {
-        try {
-            Thread.sleep(timePassed);
-        } catch (Exception ex) {
-        }
-    }
-
-
-    protected final int getScreenWidth() {
-        return screenManager.getWidth();
-    }
-
-
-    protected final int getScreenHeight() {
-        return screenManager.getHeight();
-    }
-
     /**
      *
      * @param deltaTime
@@ -139,5 +71,65 @@ public abstract class Engine {
      */
     protected void onInit() {
     }
+    
+    private void init() {
+        DisplayMode displayMode = screenManager.findFirstCompatibaleMode();
+        screenManager.setFullScreen(displayMode);
+        window = screenManager.getFullScreenWindow();
+
+        initDefaultWindowGraphicSettings();
+
+        onInit();
+
+        running = true;
+    }
+
+    private void initDefaultWindowGraphicSettings() throws HeadlessException, IndexOutOfBoundsException {
+        window.setFont(new Font("Arial", Font.PLAIN, 20));
+        window.setBackground(Color.WHITE);
+        window.setForeground(Color.RED);
+    }
+
+    private void draw() {
+        graphics = screenManager.getGraphics();
+
+        clearGameWindow(graphics);
+        onDraw(graphics);
+        screenManager.update();
+    }
+
+    private void clearGameWindow(Graphics2D graphics) {
+        graphics.setColor(clearGameWindowColor);
+        graphics.fillRect(0, 0, screenManager.getWidth(), screenManager.getHeight());
+    }
+
+    /**
+     * main game loop, implements variable timestep, runs until stop() has been called
+     */
+    private void gameLoop() {
+        long startTime = System.currentTimeMillis();
+        long cumulativeTime = startTime;
+
+        while (running) {
+            long loopBeginTime = System.currentTimeMillis();
+            long timePassed = loopBeginTime - cumulativeTime;
+            double deltaTime = (double) timePassed / OPTIMAL_TIME_IN_MILIS;
+            cumulativeTime += timePassed;
+
+            onTick(deltaTime);
+            draw();
+
+            sleep(loopBeginTime - System.currentTimeMillis() + OPTIMAL_TIME_IN_MILIS);
+        }
+    }
+
+    private void sleep(long timePassed) {
+        try {
+            Thread.sleep(timePassed);
+        } catch (Exception ex) {
+        }
+    }
+
+    
 
 }

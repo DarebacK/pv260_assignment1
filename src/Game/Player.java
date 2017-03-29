@@ -1,18 +1,12 @@
 package Game;
 
-import Engine.GameObject;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- *
+ * Represents player's functionality, his direction and his color
+ * @author Mari
  * @author Pavel Morcinek (433491@mail.muni.cz)
  */
 public class Player extends GameObject { 
@@ -29,7 +23,7 @@ public class Player extends GameObject {
      */
     protected List<Integer> pathY = new ArrayList();
     
-    private final int MOVE_SPEED = 5;
+    private static final int MOVE_SPEED = 5;
     
     public Player(int centreX, int centreY, Direction currentDirection, Color color) {
         super(centreX, centreY);
@@ -37,57 +31,27 @@ public class Player extends GameObject {
         this.color = color;
     }
     
-    private void movePlayer(double deltaTime){        
-        int moveAmount = (int) (deltaTime * MOVE_SPEED);
-        switch(currentDirection){
-            case UP: 
-                moveUp(moveAmount);
-                break;
-                
-            case RIGHT:
-                moveRight(moveAmount);
-                break;
-                
-            case DOWN:
-                moveDown(moveAmount);
-                break;
-                
-            case LEFT:
-                moveLeft(moveAmount);
-                break;
-        }
-    }   
+      
 
+    /**
+     * 
+     * @return Player's color
+     */
     public Color getColor() {
         return color;
     }
 
-    private void moveUp(long moveAmount){
-        centreY -= moveAmount;
-    }
     
-    private void moveRight(long moveAmount){
-        centreX += moveAmount;
-    }
-    
-    private void moveDown(long moveAmount) {
-        centreY += moveAmount;
-    }
-    
-    private void moveLeft(long moveAmount) {
-        centreX -= moveAmount;
-    }
 
+    /**
+     * Called by engine to signalize a tick has happened
+     * @param deltaTime 
+     */
     @Override
     public void tick(double deltaTime) {
-        movePlayer(deltaTime);
+        movePlayer();
         rememberPath();
-    }   
-    
-    private void rememberPath() {
-        pathX.add(centreX);
-        pathY.add(centreY);
-    }   
+    }    
 
     public Direction getCurrentDirection() {
         return currentDirection;
@@ -105,5 +69,49 @@ public class Player extends GameObject {
         return pathY;
     }
     
+    /**
+     * Does not make use of deltaTime because it causes issues with Collision and rendering
+     */
+    private void movePlayer(){        
+        int moveAmount =  MOVE_SPEED;
+        switch(currentDirection){
+            case UP: 
+                moveUp(moveAmount);
+                break;
+                
+            case RIGHT:
+                moveRight(moveAmount);
+                break;
+                
+            case DOWN:
+                moveDown(moveAmount);
+                break;
+                
+            case LEFT:
+                moveLeft(moveAmount);
+                break;
+        }
+    } 
+    
+    private void moveUp(long moveAmount){
+        centreY -= moveAmount;
+    }
+    
+    private void moveRight(long moveAmount){
+        centreX += moveAmount;
+    }
+    
+    private void moveDown(long moveAmount) {
+        centreY += moveAmount;
+    }
+    
+    private void moveLeft(long moveAmount) {
+        centreX -= moveAmount;
+    }
+    
+    private void rememberPath() {
+        pathX.add(centreX);
+        pathY.add(centreY);
+    }  
 }
 

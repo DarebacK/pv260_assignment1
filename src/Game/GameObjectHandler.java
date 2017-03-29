@@ -1,21 +1,21 @@
-package Engine;
+package Game;
 
 import java.util.LinkedList;
 import java.util.List;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
- *
+ * Manages game objects
  * @author Mari
+ * @author Pavel Morcinek (433491@mail.muni.cz)
  */
 public class GameObjectHandler {
 
-    List<GameObject> gameobjects = new LinkedList<GameObject>();
+    List<GameObject> gameobjects = new LinkedList<>();
 
+    /**
+     * Calls tick methods on all game objects
+     * @param deltaTime 
+     */
     public void tick(double deltaTime) {
         for (int i = 0; i < gameobjects.size(); i++) {
             GameObject tempObject = gameobjects.get(i);
